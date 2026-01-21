@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { Header, Footer } from '$lib/components';
 	import '$lib/styles/global.css';
+	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+
+	injectSpeedInsights();
 
 	interface Props {
 		children: any;
