@@ -12,8 +12,11 @@
 	--color-accent: #4a5440;
 
 	/* Typography */
-	--font-serif: 'Cormorant Garamond', Georgia, serif;
-	--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--font-primary: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--font-secondary: 'Wix Madefor Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	/* Legacy aliases */
+	--font-serif: var(--font-secondary);
+	--font-sans: var(--font-primary);
 
 	/* Spacing */
 	--spacing-xs: 0.5rem;
@@ -44,8 +47,8 @@ html {
 }
 
 body {
-	font-family: var(--font-sans);
-	font-size: 1rem;
+	font-family: var(--font-primary);
+	font-size: 1.125rem;
 	line-height: 1.6;
 	color: var(--color-text);
 	background-color: var(--color-background);
@@ -55,26 +58,23 @@ body {
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-	font-family: var(--font-serif);
-	font-weight: 400;
+	font-family: var(--font-secondary);
+	font-weight: 600;
 	line-height: 1.2;
 	color: var(--color-text);
 }
 
 h1 {
-	font-size: clamp(2.5rem, 5vw, 4.5rem);
-	font-style: italic;
+	font-size: clamp(3rem, 6vw, 5rem);
 }
 
 h2 {
-	font-size: clamp(2rem, 4vw, 3.5rem);
-	font-style: italic;
+	font-size: clamp(2.5rem, 5vw, 4rem);
 }
 
 h3 {
-	font-size: clamp(1.25rem, 2vw, 1.5rem);
+	font-size: clamp(1.5rem, 2.5vw, 1.75rem);
 	font-weight: 500;
-	font-family: var(--font-sans);
 }
 
 p {
@@ -111,7 +111,7 @@ img {
 	justify-content: center;
 	gap: 0.5rem;
 	padding: 0.875rem 1.5rem;
-	font-family: var(--font-sans);
+	font-family: var(--font-primary);
 	font-size: 0.875rem;
 	font-weight: 500;
 	text-decoration: none;

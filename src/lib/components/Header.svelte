@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { urlFor } from '$lib/sanity/client';
+	import type { SiteSettings } from '$lib/types';
 
+	interface Props {
+		siteSettings?: SiteSettings;
+	}
+
+	let { siteSettings }: Props = $props();
 	let menuOpen = $state(false);
 
 	function toggleMenu() {
@@ -10,13 +17,20 @@
 	function closeMenu() {
 		menuOpen = false;
 	}
+
+	const logoUrl = $derived(siteSettings?.logo ? urlFor(siteSettings.logo).width(200).url() : null);
+	const siteName = $derived(siteSettings?.siteName || 'Elias Immersive');
 </script>
 
 <header class="header">
 	<div class="header-container">
 		<a href="/" class="logo" onclick={closeMenu}>
-			<span class="logo-icon">ei</span>
-			<span class="logo-text">Elias Immersive</span>
+			{#if logoUrl}
+				<img src={logoUrl} alt={siteName} class="logo-image" />
+			{:else}
+				<span class="logo-icon">ei</span>
+				<span class="logo-text">{siteName}</span>
+			{/if}
 		</a>
 
 		<nav class="nav-desktop">
@@ -82,6 +96,12 @@
 	.logo-text {
 		font-size: 1rem;
 		font-weight: 500;
+	}
+
+	.logo-image {
+		height: 2.5rem;
+		width: auto;
+		object-fit: contain;
 	}
 
 	.nav-desktop {

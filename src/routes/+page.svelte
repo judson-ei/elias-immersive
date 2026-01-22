@@ -217,8 +217,7 @@
 
 	.hero-title,
 	.hero-subtitle {
-		font-size: clamp(2.5rem, 5vw, 4rem);
-		font-style: italic;
+		font-size: clamp(3rem, 6vw, 4.5rem);
 		line-height: 1.1;
 		margin: 0;
 	}
@@ -229,7 +228,7 @@
 
 	.hero-description {
 		color: var(--color-text-light);
-		font-size: 1rem;
+		font-size: 1.125rem;
 		line-height: 1.7;
 		margin-bottom: var(--spacing-md);
 		max-width: 550px;
@@ -294,7 +293,7 @@
 	}
 
 	.about-text p {
-		font-size: 1rem;
+		font-size: 1.125rem;
 		line-height: 1.8;
 		color: var(--color-text-light);
 	}
@@ -318,7 +317,7 @@
 
 	.use-cases-subtitle {
 		color: var(--color-text-light);
-		font-size: 1rem;
+		font-size: 1.125rem;
 		max-width: 600px;
 		margin: 0 auto;
 	}

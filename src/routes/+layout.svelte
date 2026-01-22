@@ -2,24 +2,28 @@
 	import { Header, Footer } from '$lib/components';
 	import '$lib/styles/global.css';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+	import type { SiteSettings } from '$lib/types';
 
 	injectSpeedInsights();
 
 	interface Props {
 		children: any;
+		data: {
+			siteSettings: SiteSettings;
+		};
 	}
 
-	let { children }: Props = $props();
+	let { children, data }: Props = $props();
 </script>
 
 <svelte:head>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-	<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Wix+Madefor+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </svelte:head>
 
 <div class="app">
-	<Header />
+	<Header siteSettings={data.siteSettings} />
 	<main>
 		{@render children()}
 	</main>
