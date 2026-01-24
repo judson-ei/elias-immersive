@@ -1,12 +1,13 @@
 import { fail } from '@sveltejs/kit';
 import { Resend } from 'resend';
-import { RESEND_API_KEY, CONTACT_EMAIL } from '$env/static/private';
+import { RESEND_API_KEY } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { Actions } from './$types';
 
 const resend = new Resend(RESEND_API_KEY);
 
 // Where contact form submissions are sent
-const recipientEmail = CONTACT_EMAIL || 'judson@eliasimmersive.com';
+const recipientEmail = env.CONTACT_EMAIL || 'judson@eliasimmersive.com';
 
 export const actions = {
 	default: async ({ request }) => {
