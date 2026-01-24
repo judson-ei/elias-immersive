@@ -14,7 +14,7 @@
 		const formData = new FormData(form);
 
 		try {
-			const response = await fetch('https://formspree.io/f/xreewbna', {
+			const response = await fetch('https://formspree.io/f/xrepjjjp', {
 				method: 'POST',
 				body: formData,
 				headers: {
