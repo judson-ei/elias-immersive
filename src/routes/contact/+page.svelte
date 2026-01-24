@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { SEO } from '$lib/components';
 
-	const WEB3FORMS_KEY = 'YOUR_ACCESS_KEY_HERE'; // Get from https://web3forms.com
+	const WEB3FORMS_KEY = '2221e5f5-1de2-4adb-ad11-1ee9cee6a6cc';
 
 	let submitting = $state(false);
 	let submitted = $state(false);
