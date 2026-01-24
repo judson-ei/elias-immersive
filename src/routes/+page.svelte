@@ -2,6 +2,8 @@
 	import { ServiceCard, ProjectCard, Accordion, ArrowButton, SEO } from '$lib/components';
 	import type { PageData } from './$types';
 
+	const WEB3FORMS_KEY = '2221e5f5-1de2-4adb-ad11-1ee9cee6a6cc';
+
 	interface Props {
 		data: PageData;
 	}
@@ -18,22 +20,21 @@
 
 		const form = event.target as HTMLFormElement;
 		const formData = new FormData(form);
+		formData.append('access_key', WEB3FORMS_KEY);
 
 		try {
-			const response = await fetch('https://formspree.io/f/xreewbna', {
+			const response = await fetch('https://api.web3forms.com/submit', {
 				method: 'POST',
-				body: formData,
-				headers: {
-					'Accept': 'application/json'
-				}
+				body: formData
 			});
 
-			if (response.ok) {
+			const data = await response.json();
+
+			if (data.success) {
 				submitted = true;
 				form.reset();
 			} else {
-				const data = await response.json();
-				error = data.errors?.map((e: any) => e.message).join(', ') || 'Something went wrong. Please try again.';
+				error = data.message || 'Something went wrong. Please try again.';
 			}
 		} catch (e) {
 			error = 'Something went wrong. Please try again.';
@@ -162,6 +163,11 @@
 				</div>
 			{:else}
 				<form onsubmit={handleSubmit}>
+					<!-- Hidden fields for Web3Forms -->
+					<input type="hidden" name="subject" value="New Contact Form Submission - Elias Immersive" />
+					<input type="hidden" name="from_name" value="Elias Immersive Contact Form" />
+					<input type="checkbox" name="botcheck" class="hidden" style="display:none" />
+
 					<div class="form-row">
 						<div class="form-group">
 							<label for="firstName">First name <span class="required">*</span></label>
