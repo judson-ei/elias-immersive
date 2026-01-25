@@ -148,6 +148,7 @@
 							allow="xr-spatial-tracking"
 						></iframe>
 					</div>
+					<p class="matterport-caption">Explore this live digital twin. Click the tags to see how assets and details are documented.</p>
 				{:else if data.solutionImageUrl}
 					<img src={data.solutionImageUrl} alt={page.solutionImageCaption || 'Digital twin preview'} />
 				{:else}
@@ -501,6 +502,14 @@
 		width: 100%;
 		height: 100%;
 		border: none;
+	}
+
+	.matterport-caption {
+		margin-top: 1rem;
+		font-size: 0.9375rem;
+		color: var(--color-text-light);
+		text-align: center;
+		font-style: italic;
 	}
 
 	.visual-placeholder {
