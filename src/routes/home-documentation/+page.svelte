@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { SEO } from '$lib/components';
 	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		data: PageData;
@@ -12,6 +13,15 @@
 	let submitting = $state(false);
 	let submitted = $state(false);
 	let error = $state('');
+	let showStickyCta = $state(false);
+
+	onMount(() => {
+		const handleScroll = () => {
+			showStickyCta = window.scrollY > 500;
+		};
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	});
 
 	async function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
@@ -22,7 +32,7 @@
 		const formData = new FormData(form);
 
 		try {
-			const response = await fetch('https://formspree.io/f/xreewbna', {
+			const response = await fetch('https://formspree.io/f/mojdvkzw', {
 				method: 'POST',
 				body: formData,
 				headers: {
@@ -44,7 +54,7 @@
 		}
 	}
 
-	const seoTitle = page.seo?.metaTitle || 'Home Documentation & Digital Twins | Elias Immersive | Park City, Utah';
+	const seoTitle = page.seo?.metaTitle || 'Home Documentation & Digital Twins | Elias Immersive';
 	const seoDescription = page.seo?.metaDescription || 'Protect your home with comprehensive digital documentation. 3D scans and virtual walkthroughs for insurance claims, estate planning, and peace of mind.';
 </script>
 
@@ -61,20 +71,32 @@
 <!-- Hero Section -->
 <section class="hero">
 	<div class="container">
-		<div class="hero-content">
-			{#if page.heroEyebrow}
-				<p class="hero-eyebrow">{page.heroEyebrow}</p>
-			{/if}
-			<h1 class="hero-headline">{page.heroHeadline}</h1>
-			{#if page.heroSubheadline}
-				<p class="hero-subheadline">{page.heroSubheadline}</p>
-			{/if}
-			{#if page.heroSolution}
-				<p class="hero-solution">
-					<strong>There's a better way.</strong> {page.heroSolution.replace("There's a better way. ", '')}
-				</p>
-			{/if}
-			<a href="#consultation" class="btn btn-primary btn-lg">{page.heroCta || 'Book a Free Consultation'}</a>
+		<div class="hero-grid">
+			<div class="hero-content">
+				{#if page.heroEyebrow}
+					<p class="hero-eyebrow">{page.heroEyebrow}</p>
+				{/if}
+				<h1 class="hero-headline">{page.heroHeadline}</h1>
+				{#if page.heroSubheadline}
+					<p class="hero-subheadline">{page.heroSubheadline}</p>
+				{/if}
+				{#if page.heroSolution}
+					<p class="hero-solution">
+						<strong>There's a better way.</strong> {page.heroSolution.replace("There's a better way. ", '')}
+					</p>
+				{/if}
+				<a href="#consultation" class="btn btn-primary btn-lg">{page.heroCta || 'Book a Free Consultation'}</a>
+			</div>
+			<div class="hero-video">
+				<div class="video-placeholder">
+					<div class="play-icon">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z"/>
+						</svg>
+					</div>
+					<span>Explainer Video Coming Soon</span>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
@@ -117,7 +139,17 @@
 				{/if}
 			</div>
 			<div class="solution-visual">
-				{#if data.solutionImageUrl}
+				{#if data.matterportEmbedUrl}
+					<div class="matterport-embed">
+						<iframe
+							src={data.matterportEmbedUrl}
+							title="Interactive 3D Home Tour"
+							allowfullscreen
+							allow="xr-spatial-tracking"
+						></iframe>
+					</div>
+					<p class="matterport-caption">Navigate through this interactive tour and click the tags to see how we document your home's details.</p>
+				{:else if data.solutionImageUrl}
 					<img src={data.solutionImageUrl} alt={page.solutionImageCaption || 'Digital twin preview'} />
 				{:else}
 					<div class="visual-placeholder">
@@ -167,9 +199,31 @@
 </section>
 {/if}
 
+<!-- FAQ Section -->
+{#if page.faqs && page.faqs.length > 0}
+<section class="faq section bg-light">
+	<div class="container">
+		<h2 class="section-title text-center">{page.faqTitle || 'Frequently Asked Questions'}</h2>
+		<div class="faq-list">
+			{#each page.faqs as faq, i}
+				<details class="faq-item">
+					<summary class="faq-question">
+						{faq.question}
+						<svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<polyline points="6 9 12 15 18 9"></polyline>
+						</svg>
+					</summary>
+					<p class="faq-answer">{faq.answer}</p>
+				</details>
+			{/each}
+		</div>
+	</div>
+</section>
+{/if}
+
 <!-- Trust Section -->
 {#if page.trustTitle || page.trustContent}
-<section class="trust section bg-light">
+<section class="trust section">
 	<div class="container">
 		<div class="trust-content">
 			{#if page.trustTitle}
@@ -214,15 +268,9 @@
 					</div>
 				{:else}
 					<form onsubmit={handleSubmit}>
-						<div class="form-row">
-							<div class="form-group">
-								<label for="firstName">First Name <span class="required">*</span></label>
-								<input type="text" id="firstName" name="firstName" required />
-							</div>
-							<div class="form-group">
-								<label for="lastName">Last Name <span class="required">*</span></label>
-								<input type="text" id="lastName" name="lastName" required />
-							</div>
+						<div class="form-group">
+							<label for="name">Name <span class="required">*</span></label>
+							<input type="text" id="name" name="name" required />
 						</div>
 
 						<div class="form-group">
@@ -236,23 +284,13 @@
 						</div>
 
 						<div class="form-group">
-							<label for="propertyType">Property Type</label>
-							<select id="propertyType" name="propertyType">
-								<option value="">Select...</option>
-								<option value="primary-residence">Primary Residence</option>
-								<option value="second-home">Second Home / Vacation Property</option>
-								<option value="rental">Rental Property</option>
-								<option value="other">Other</option>
-							</select>
-						</div>
-
-						<div class="form-group">
-							<label for="message">Tell us about your property</label>
+							<label for="message">Tell us about your property <span class="required">*</span></label>
 							<textarea
 								id="message"
 								name="message"
 								rows="3"
 								placeholder="Approximate size, any specific areas of interest, etc."
+								required
 							></textarea>
 						</div>
 
@@ -273,6 +311,16 @@
 	</div>
 </section>
 
+<!-- Sticky CTA -->
+{#if showStickyCta}
+	<div class="sticky-cta">
+		<div class="sticky-cta-content">
+			<span class="sticky-cta-text">Ready to protect your home?</span>
+			<a href="#consultation" class="btn btn-primary">Book Free Consultation</a>
+		</div>
+	</div>
+{/if}
+
 <style>
 	/* Hero Section */
 	.hero {
@@ -280,10 +328,15 @@
 		background: linear-gradient(135deg, var(--color-background) 0%, #e8e8e0 100%);
 	}
 
+	.hero-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing-lg);
+		align-items: center;
+	}
+
 	.hero-content {
-		max-width: 800px;
-		margin: 0 auto;
-		text-align: center;
+		text-align: left;
 	}
 
 	.hero-eyebrow {
@@ -296,22 +349,62 @@
 	}
 
 	.hero-headline {
-		font-size: clamp(2.5rem, 5vw, 3.5rem);
+		font-size: clamp(2rem, 4vw, 3rem);
 		line-height: 1.1;
 		margin-bottom: var(--spacing-md);
 	}
 
 	.hero-subheadline {
-		font-size: 1.25rem;
+		font-size: 1.125rem;
 		color: var(--color-text-light);
 		line-height: 1.7;
 		margin-bottom: var(--spacing-sm);
 	}
 
 	.hero-solution {
-		font-size: 1.125rem;
+		font-size: 1rem;
 		line-height: 1.7;
 		margin-bottom: var(--spacing-md);
+	}
+
+	.hero-video {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.video-placeholder {
+		width: 100%;
+		aspect-ratio: 16/9;
+		background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+		border-radius: 12px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: var(--spacing-sm);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+	}
+
+	.play-icon {
+		width: 64px;
+		height: 64px;
+		background: rgba(255, 255, 255, 0.1);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	.play-icon svg {
+		width: 32px;
+		height: 32px;
+	}
+
+	.video-placeholder span {
+		color: rgba(255, 255, 255, 0.5);
+		font-size: 0.875rem;
 	}
 
 	.btn-lg {
@@ -356,9 +449,9 @@
 	/* Solution Section */
 	.solution-content {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr 1.4fr;
 		gap: var(--spacing-lg);
-		align-items: center;
+		align-items: start;
 	}
 
 	.solution-text p {
@@ -391,6 +484,33 @@
 		width: 100%;
 		height: auto;
 		border-radius: 8px;
+	}
+
+	.matterport-embed {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 4/3;
+		border-radius: 8px;
+		overflow: hidden;
+		min-height: 450px;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+	}
+
+	.matterport-embed iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border: none;
+	}
+
+	.matterport-caption {
+		margin-top: 1rem;
+		font-size: 0.9375rem;
+		color: var(--color-text-light);
+		text-align: center;
+		font-style: italic;
 	}
 
 	.visual-placeholder {
@@ -473,6 +593,59 @@
 		margin: 0;
 	}
 
+	/* FAQ Section */
+	.faq-list {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.faq-item {
+		background: var(--color-background);
+		border-radius: 8px;
+		margin-bottom: 1rem;
+		overflow: hidden;
+	}
+
+	.faq-question {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1.25rem 1.5rem;
+		font-weight: 500;
+		font-size: 1.0625rem;
+		cursor: pointer;
+		list-style: none;
+		transition: background-color 0.2s ease;
+	}
+
+	.faq-question::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-question:hover {
+		background: rgba(0, 0, 0, 0.02);
+	}
+
+	.faq-icon {
+		width: 20px;
+		height: 20px;
+		color: var(--color-text-light);
+		transition: transform 0.2s ease;
+		flex-shrink: 0;
+		margin-left: 1rem;
+	}
+
+	.faq-item[open] .faq-icon {
+		transform: rotate(180deg);
+	}
+
+	.faq-answer {
+		padding: 0 1.5rem 1.25rem;
+		color: var(--color-text-light);
+		line-height: 1.7;
+		margin: 0;
+	}
+
 	/* Trust Section */
 	.trust-content {
 		max-width: 800px;
@@ -552,6 +725,11 @@
 		color: var(--color-primary);
 	}
 
+	.optional {
+		color: var(--color-text-light);
+		font-weight: 400;
+	}
+
 	.form-group input,
 	.form-group select,
 	.form-group textarea {
@@ -621,6 +799,20 @@
 
 	/* Responsive */
 	@media (max-width: 1024px) {
+		.hero-grid {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-md);
+		}
+
+		.hero-content {
+			text-align: center;
+			order: 1;
+		}
+
+		.hero-video {
+			order: 2;
+		}
+
 		.problem-grid {
 			grid-template-columns: repeat(3, 1fr);
 		}
@@ -663,5 +855,53 @@
 		.hero-headline {
 			font-size: 2rem;
 		}
+
+		.sticky-cta {
+			padding: 0.75rem var(--spacing-sm);
+		}
+
+		.sticky-cta-text {
+			display: none;
+		}
+
+		.sticky-cta .btn {
+			width: 100%;
+		}
+	}
+
+	/* Sticky CTA */
+	.sticky-cta {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: white;
+		padding: 1rem var(--spacing-md);
+		box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+		z-index: 100;
+		animation: slideUp 0.3s ease-out;
+	}
+
+	@keyframes slideUp {
+		from {
+			transform: translateY(100%);
+		}
+		to {
+			transform: translateY(0);
+		}
+	}
+
+	.sticky-cta-content {
+		max-width: var(--container-max-width, 1400px);
+		margin: 0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--spacing-md);
+	}
+
+	.sticky-cta-text {
+		font-weight: 500;
+		color: var(--color-text);
 	}
 </style>
