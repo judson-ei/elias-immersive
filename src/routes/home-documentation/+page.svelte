@@ -117,7 +117,16 @@
 				{/if}
 			</div>
 			<div class="solution-visual">
-				{#if data.solutionImageUrl}
+				{#if data.matterportEmbedUrl}
+					<div class="matterport-embed">
+						<iframe
+							src={data.matterportEmbedUrl}
+							title="Interactive 3D Home Tour"
+							allowfullscreen
+							allow="xr-spatial-tracking"
+						></iframe>
+					</div>
+				{:else if data.solutionImageUrl}
 					<img src={data.solutionImageUrl} alt={page.solutionImageCaption || 'Digital twin preview'} />
 				{:else}
 					<div class="visual-placeholder">
@@ -391,6 +400,24 @@
 		width: 100%;
 		height: auto;
 		border-radius: 8px;
+	}
+
+	.matterport-embed {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 16/9;
+		border-radius: 8px;
+		overflow: hidden;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+	}
+
+	.matterport-embed iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border: none;
 	}
 
 	.visual-placeholder {

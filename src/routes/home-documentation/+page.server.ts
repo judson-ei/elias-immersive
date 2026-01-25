@@ -3,6 +3,9 @@ import { client, urlFor } from '$lib/sanity/client';
 import { landingPageBySlugQuery } from '$lib/sanity/queries';
 import type { LandingPage } from '$lib/types';
 
+// Matterport demo embed URL
+const MATTERPORT_EMBED_URL = 'https://my.matterport.com/show/?m=o6PVWmeo8Bb';
+
 // Default content for the Home Documentation landing page
 const defaultContent: LandingPage = {
 	title: 'Home Documentation',
@@ -65,20 +68,23 @@ export const load: PageServerLoad = async () => {
 		if (landingPage) {
 			return {
 				landingPage,
-				solutionImageUrl: landingPage.solutionImage ? urlFor(landingPage.solutionImage).width(800).url() : null
+				solutionImageUrl: landingPage.solutionImage ? urlFor(landingPage.solutionImage).width(800).url() : null,
+				matterportEmbedUrl: MATTERPORT_EMBED_URL
 			};
 		}
 
 		// Return default content if no Sanity document exists
 		return {
 			landingPage: defaultContent,
-			solutionImageUrl: null
+			solutionImageUrl: null,
+			matterportEmbedUrl: MATTERPORT_EMBED_URL
 		};
 	} catch (error) {
 		console.log('Using default landing page content - Sanity not configured or document not found');
 		return {
 			landingPage: defaultContent,
-			solutionImageUrl: null
+			solutionImageUrl: null,
+			matterportEmbedUrl: MATTERPORT_EMBED_URL
 		};
 	}
 };
