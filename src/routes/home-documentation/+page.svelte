@@ -283,12 +283,13 @@
 						</div>
 
 						<div class="form-group">
-							<label for="message">Tell us about your property <span class="optional">(optional)</span></label>
+							<label for="message">Tell us about your property <span class="required">*</span></label>
 							<textarea
 								id="message"
 								name="message"
 								rows="3"
 								placeholder="Approximate size, any specific areas of interest, etc."
+								required
 							></textarea>
 						</div>
 
