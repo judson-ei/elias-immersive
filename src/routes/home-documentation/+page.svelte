@@ -198,9 +198,31 @@
 </section>
 {/if}
 
+<!-- FAQ Section -->
+{#if page.faqs && page.faqs.length > 0}
+<section class="faq section bg-light">
+	<div class="container">
+		<h2 class="section-title text-center">{page.faqTitle || 'Frequently Asked Questions'}</h2>
+		<div class="faq-list">
+			{#each page.faqs as faq, i}
+				<details class="faq-item">
+					<summary class="faq-question">
+						{faq.question}
+						<svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<polyline points="6 9 12 15 18 9"></polyline>
+						</svg>
+					</summary>
+					<p class="faq-answer">{faq.answer}</p>
+				</details>
+			{/each}
+		</div>
+	</div>
+</section>
+{/if}
+
 <!-- Trust Section -->
 {#if page.trustTitle || page.trustContent}
-<section class="trust section bg-light">
+<section class="trust section">
 	<div class="container">
 		<div class="trust-content">
 			{#if page.trustTitle}
@@ -557,6 +579,59 @@
 	.process-step p {
 		color: var(--color-text-light);
 		font-size: 0.9375rem;
+		margin: 0;
+	}
+
+	/* FAQ Section */
+	.faq-list {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.faq-item {
+		background: var(--color-background);
+		border-radius: 8px;
+		margin-bottom: 1rem;
+		overflow: hidden;
+	}
+
+	.faq-question {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1.25rem 1.5rem;
+		font-weight: 500;
+		font-size: 1.0625rem;
+		cursor: pointer;
+		list-style: none;
+		transition: background-color 0.2s ease;
+	}
+
+	.faq-question::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-question:hover {
+		background: rgba(0, 0, 0, 0.02);
+	}
+
+	.faq-icon {
+		width: 20px;
+		height: 20px;
+		color: var(--color-text-light);
+		transition: transform 0.2s ease;
+		flex-shrink: 0;
+		margin-left: 1rem;
+	}
+
+	.faq-item[open] .faq-icon {
+		transform: rotate(180deg);
+	}
+
+	.faq-answer {
+		padding: 0 1.5rem 1.25rem;
+		color: var(--color-text-light);
+		line-height: 1.7;
 		margin: 0;
 	}
 

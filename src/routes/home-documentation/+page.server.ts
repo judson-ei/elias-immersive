@@ -50,6 +50,37 @@ const defaultContent: LandingPage = {
 		{ title: 'Processing', description: 'We create your interactive digital twin, optimized for easy navigation and detail review.' },
 		{ title: 'Delivery', description: 'Access your secure digital twin online. Walk through it anytime, share with advisors, export as needed.' }
 	],
+	faqTitle: 'Frequently Asked Questions',
+	faqs: [
+		{
+			question: 'How much does it cost?',
+			answer: 'Pricing varies based on home size and complexity. We provide a custom quote during your free consultation—no surprises, no hidden fees.'
+		},
+		{
+			question: 'How long does the scanning take?',
+			answer: 'Most homes are completed in 2-4 hours. Larger estates may take longer. We work around your schedule and ensure minimal disruption to your day.'
+		},
+		{
+			question: 'Is my data secure and private?',
+			answer: 'Absolutely. Your digital twin is hosted on secure, encrypted servers. Only you control who has access. We never share your data with third parties.'
+		},
+		{
+			question: 'Do I need to prepare my home?',
+			answer: 'No major preparation needed. We capture your home as you live in it—that\'s the point. If you prefer, you can tidy high-priority areas beforehand, but it\'s not required.'
+		},
+		{
+			question: 'How do I access my digital twin?',
+			answer: 'Through any web browser on your computer, tablet, or phone. No special software or apps required. You\'ll receive a private link after delivery.'
+		},
+		{
+			question: 'Will this actually help with insurance claims?',
+			answer: 'Yes. Visual documentation is significantly more compelling than written inventories or receipts. Many insurance professionals recommend this type of documentation for high-value homes.'
+		},
+		{
+			question: 'How often should I update my scan?',
+			answer: 'We recommend updating after major purchases, renovations, or every 2-3 years. We offer discounted rescans for existing clients.'
+		}
+	],
 	trustTitle: 'Built for Homeowners Who Value What They Own',
 	trustContent: 'We understand that every home tells a story. From expansive estates to thoughtfully designed family homes, our scanning technology captures the full scope of your investment—including those hard-to-document spaces like wine cellars, storage areas, and architectural details that make your home unique.\n\nYour data stays secure, private, and accessible only to you.',
 	ctaTitle: 'Book Your Free Consultation',
