@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { SEO } from '$lib/components';
 	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		data: PageData;
@@ -12,6 +13,15 @@
 	let submitting = $state(false);
 	let submitted = $state(false);
 	let error = $state('');
+	let showStickyCta = $state(false);
+
+	onMount(() => {
+		const handleScroll = () => {
+			showStickyCta = window.scrollY > 500;
+		};
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	});
 
 	async function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
@@ -235,15 +245,9 @@
 					</div>
 				{:else}
 					<form onsubmit={handleSubmit}>
-						<div class="form-row">
-							<div class="form-group">
-								<label for="firstName">First Name <span class="required">*</span></label>
-								<input type="text" id="firstName" name="firstName" required />
-							</div>
-							<div class="form-group">
-								<label for="lastName">Last Name <span class="required">*</span></label>
-								<input type="text" id="lastName" name="lastName" required />
-							</div>
+						<div class="form-group">
+							<label for="name">Name <span class="required">*</span></label>
+							<input type="text" id="name" name="name" required />
 						</div>
 
 						<div class="form-group">
@@ -257,18 +261,7 @@
 						</div>
 
 						<div class="form-group">
-							<label for="propertyType">Property Type</label>
-							<select id="propertyType" name="propertyType">
-								<option value="">Select...</option>
-								<option value="primary-residence">Primary Residence</option>
-								<option value="second-home">Second Home / Vacation Property</option>
-								<option value="rental">Rental Property</option>
-								<option value="other">Other</option>
-							</select>
-						</div>
-
-						<div class="form-group">
-							<label for="message">Tell us about your property</label>
+							<label for="message">Tell us about your property <span class="optional">(optional)</span></label>
 							<textarea
 								id="message"
 								name="message"
@@ -293,6 +286,16 @@
 		</div>
 	</div>
 </section>
+
+<!-- Sticky CTA -->
+{#if showStickyCta}
+	<div class="sticky-cta">
+		<div class="sticky-cta-content">
+			<span class="sticky-cta-text">Ready to protect your home?</span>
+			<a href="#consultation" class="btn btn-primary">Book Free Consultation</a>
+		</div>
+	</div>
+{/if}
 
 <style>
 	/* Hero Section */
@@ -636,6 +639,11 @@
 		color: var(--color-primary);
 	}
 
+	.optional {
+		color: var(--color-text-light);
+		font-weight: 400;
+	}
+
 	.form-group input,
 	.form-group select,
 	.form-group textarea {
@@ -761,5 +769,53 @@
 		.hero-headline {
 			font-size: 2rem;
 		}
+
+		.sticky-cta {
+			padding: 0.75rem var(--spacing-sm);
+		}
+
+		.sticky-cta-text {
+			display: none;
+		}
+
+		.sticky-cta .btn {
+			width: 100%;
+		}
+	}
+
+	/* Sticky CTA */
+	.sticky-cta {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: white;
+		padding: 1rem var(--spacing-md);
+		box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+		z-index: 100;
+		animation: slideUp 0.3s ease-out;
+	}
+
+	@keyframes slideUp {
+		from {
+			transform: translateY(100%);
+		}
+		to {
+			transform: translateY(0);
+		}
+	}
+
+	.sticky-cta-content {
+		max-width: var(--container-max-width, 1400px);
+		margin: 0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--spacing-md);
+	}
+
+	.sticky-cta-text {
+		font-weight: 500;
+		color: var(--color-text);
 	}
 </style>
