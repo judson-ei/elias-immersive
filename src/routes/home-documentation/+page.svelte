@@ -22,7 +22,7 @@
 		const formData = new FormData(form);
 
 		try {
-			const response = await fetch('https://formspree.io/f/xreewbna', {
+			const response = await fetch('https://formspree.io/f/mojdvkzw', {
 				method: 'POST',
 				body: formData,
 				headers: {
